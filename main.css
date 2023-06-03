@@ -1,0 +1,121 @@
+@import "fonts/font.css";
+
+body{
+    user-select: none;
+    background-image: linear-gradient(180deg, rgb(223, 202, 202), rgb(226, 226, 180));
+}
+.calcWrapper{
+background-image: linear-gradient(180deg, rgb(179, 152, 152), rgb(248, 227, 212));
+width: 400px;
+height: 500px;
+border-radius: 20px;
+border: solid rgb(236, 236, 255) 8px;
+margin: auto;
+}
+.inOutWindow{
+    background-image: linear-gradient(180deg, rgb(233, 213, 213), rgb(221, 248, 212));
+    width: 383px;
+    height: 155px;
+    border-radius: 20px;
+    margin: -2% 0% 0% 2%;
+    position: relative;
+    word-wrap: break-word;
+    /* overflow:hidden; */
+}
+.buttonsWrapper{
+    display: flex;
+    flex-direction: row;
+    /* border: solid black 1px; */
+    width: 383px;
+    height: 312px;
+    margin: 4% 0% 0% 2%;
+}
+.buttons{
+    /* border: solid black 1px; */
+    width: 230px;
+    height: 312px;
+}
+.button{
+    outline: none;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border-color: rgb(241, 166, 166);
+    margin: 1% 1% 1% 1%;
+    font-size: 20px;
+}
+.buttonEqual{
+    outline: none;
+    border-color: rgb(201, 171, 230);
+    width: 70px;
+    height: 70px;
+    border-radius: 40%;
+    margin: 1% 1% 1% 1%;
+    background-color: rgb(238, 218, 189);
+    font-size: 20px;
+}
+.operationButtons{
+        /* border: solid black 1px; */
+        width: 153px;
+        height: 312px;
+        margin: 1% 0 0 2%;
+}
+.operBtnStyle{
+    outline: none;
+    width: 70px;
+    height: 70px;
+    border-radius: 45%;
+    border-color: rgb(241, 166, 166);
+    margin: 1% 1% 1% 1%;
+    font-size: 20px;
+}
+.mainSings{
+    background-color: cadetblue;
+}
+.additionalSings{
+    background-color: rgb(165, 219, 221);
+}
+.pNum{
+pointer-events: none;
+}
+.addMenu{
+    background-color: rgb(239, 240, 176);
+    border-radius: 42%;
+    height: 55px;
+}
+.ce{
+    background-color: rgb(187, 138, 105);
+    border-radius: 40%;
+}
+.hide{
+    display: none;
+}
+button p{
+    background: transparent !important;
+}
+.show{
+    display: block;
+    position: absolute;
+    height: 30px;
+    width: 53px;
+    margin: 115px 0 0 318px;
+}
+img:hover {
+    transition: .3s;
+    filter: opacity(70%);
+    height: 29px;
+    width: 51px;
+}
+img:active {
+    transition: .3s;
+    filter: opacity(100%);
+    color: red;
+    height: 32px;
+    width: 56px;
+}
+#input {
+    margin: 16px 0 0 8px;
+    font-size: 24px;
+    font-family: calcZ;
+}
+ 
