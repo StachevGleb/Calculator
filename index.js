@@ -37,6 +37,7 @@ let operSymbArr2 = [];
 let useBrackets = false;
 
 //зміна операційних кнопок, через кнопку ("...").
+//changing operating buttons using this ("...").
 function changeableBtnFunc() {
     bottomBtn.classList.toggle('hide');
     changeableBtn.classList.toggle('hide');
@@ -45,69 +46,74 @@ function changeableBtnFunc() {
 addMenu.addEventListener('click', changeableBtnFunc);
 
 //додавання символів на дисплей, якщо, проходять перевірочну функцію writeValidation.
+//adding characters to the display if they passing the verification function writeValidation.
 function displayValue() {
     let displayNum = this.getAttribute('dataBtn');
-    backSpaceBtn.className = "show";
     //якщо, пройшов (символ) перевірку writeValidation додати його до вже існуючого текста на дисплей.
+    // if, character passed checking writeValidation add it to the already existing text on the display.
     if (writeValidation(displayNum, display.innerText)) {
         display.innerText += displayNum;
+        backSpaceBtn.className = "show";
     }
 }
 
 let btnValue = document.querySelectorAll('.button');
 
 //метод масива, що при кліку на будь-який .button запускає displayValue.
-btnValue.forEach(function (item) {
-    return item.addEventListener('click', displayValue)
-});
+//array method - when clicking on any .button starts displayValue.
+btnValue.forEach(function (item) {return item.addEventListener('click', displayValue)});
 
 //функція перевірки правильності введення цифр і символів в розрахункове поле.
+//function to check the symbols and numbers which we inserting in the calculation field.
 function writeValidation(displayNum, displayedVal) {
     counterClick++
+    let operBool = operSymbol(displayNum)
     // якщо, функція operSymbol вертає параметр displayNum то розбити строку displayedVal через заданий дільник.
-    if (operSymbol(displayNum)) {
-        operSymbArr.push(displayNum)
-    }
+    // if the operSymbol function returns the displayNum parameter, then divide the string displayedVal by the given divisor.
+    // if (operSymbol(displayNum)) {
+    //     operSymbArr.push(displayNum)
+    // }
+    // функція для перевірки дужок.
+    // function to check parentheses.
     if (displayNum === ')') {
         useBrackets = true;
         return bracketsCheck(displayedVal);
     }
+    // якщо, !displayedVal.length 0 то фолс, не записувати натискання на символів, крім '√' або '-'.
+    // if, !displayedVal.length 0 then do not record clicks on symbols beside '√' or '-'.
+    if (checkingSqRootAndMinus(displayNum, displayedVal)) {
+        return true
+    }  
+    // перевірка чи попередній символ являється операційним.
+    // check if previous character is operational.
     if (operSymbol(displayNum)) {
         let disArr2 = displayedVal.split('');
-        if (operSymbol((displayNum) && displayNum == '√')) {
-            return true
-        } else if (operSymbol(disArr2[disArr2.length - 1] && displayNum == '√')) {
+        if (operSymbol(displayNum) && operSymbol(disArr2[disArr2.length-1])) {
             return false
-        }
-        //     }else if (operSymbol(disArr2[disArr2.length - 1])) {
-        //     return false
-        // }
-        // console.log(disArr2.length);
-        // console.log('displayedVal', displayedVal);
-    }
-
-    // якщо, !displayedVal.length 0 то фолс, не записувати натискання на displayNum, крім '√'.
-    if (operSymbol(displayNum) && displayNum == '√') {
-        return true
-    } else if (operSymbol(displayNum) && !displayedVal.length) {
-        return false
+        } 
     }
     // для того, щоб інші кнопки працювали при натисканні.
-    if (!displayedVal.length) {
+    // to make other buttons work when they are clicked.
+    if (operSymbol(displayNum) && !displayedVal.length) {
+        return false
+    } else if (!displayedVal.length){
         return true
     }
     return true
 }
 
 //функція, що виводить на екран кнопки операційні в разі натискання (лише на дані кнопки).
+//function that displays operating buttons on the screen when pressed (only on these buttons).
 function operSymbol(displayNum) {
-    return displayNum == '×' || displayNum == '÷' || displayNum == '-' || displayNum == '+' || displayNum == '%' || displayNum == '√' || displayNum == '²' || displayNum == 'π';
+    return displayNum == '×' || displayNum == '÷' || displayNum == '-' || displayNum == '+' || 
+    displayNum == '%' || displayNum == '√' || displayNum == '²' || displayNum == 'π';
 }
 
 
 let deleteCeBtn = document.getElementById('Ce');
 
 // функція, що видаляє повністю весь вміст дисплея.
+// The function that completely removes all the content of the display.
 function deleteCeFunc() {
     display.innerText = null;
     backSpaceBtn.className = "hide";
@@ -116,6 +122,7 @@ function deleteCeFunc() {
 deleteCeBtn.addEventListener('click', deleteCeFunc)
 
 // функція, що видаляє посимвольно.
+// character-by-character deleting function.
 function backSpaceBtnFunc() {
     let a = display.innerText;
     let backArr = a.split('');
@@ -134,6 +141,7 @@ let resultBtn = document.getElementById('resultBtn');
 resultBtn.addEventListener('click', equalFunction);
 
 //функція equal, що викликає результативну функцію.
+//equal function that calls the resulting function
 
 function equalFunction() {
     let displayText = display.innerText;
@@ -162,6 +170,7 @@ function testBracketsFunc(displayText) {
 }
 
 //функція, що проводить розрахунки введених даних.
+//function that calculates inputed data.
 function resultFunc(disArr, operSymbArr) {
     let resArr = disArr;
     operSymbArr2 = operSymbArr;
@@ -267,6 +276,7 @@ function resultFunc(disArr, operSymbArr) {
 }
 
 //функція перевірки круглих дужок.
+//function to check parentheses.
 function bracketsCheck(displayedVal) {
     let disArrBr = displayedVal.split('');
     let counterLeft = 0;
@@ -283,4 +293,23 @@ function bracketsCheck(displayedVal) {
     } else {
         return false;
     }
+}
+
+
+// функція перевірка на попередній символ корінь квадратний або мінус.
+// function checking for the previous square root symbol or minus.
+function checkingSqRootAndMinus(displayNum, displayedVal) {
+    let disArrSq = displayedVal.split('');
+    // якщо, !displayedVal.length 0 то фолс, не записувати натискання на символів, крім '√' або '-'.
+    // if, !displayedVal.length 0 then do not record clicks on symbols beside '√' or '-'.
+    if (operSymbol(displayNum) && !displayedVal.length && (displayNum == '√' || displayNum == '-')){
+        return true
+    } else if(operSymbol(displayNum) && displayNum == '√' && disArrSq[disArrSq.length-1] == '-' ){
+        // квадратний корінь можна написати після мінуса.
+        // the square root can be written after the minus.
+        return true
+    } else {
+        return false
+    }
+    
 }
