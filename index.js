@@ -88,13 +88,17 @@ function writeValidation(displayNum, displayedVal) {
     // check if previous character is operational.
     if (operSymbol(displayNum)) {
         let disArr2 = displayedVal.split('');
-        if (operSymbol(displayNum) && operSymbol(disArr2[disArr2.length-1])) {
+        if (operSymbol(displayNum) && operSymbol(disArr2[disArr2.length-1]) || disArr2[disArr2.length-1] == '.') {
             return false
         } 
     }
+    if (pointCheck(displayNum, displayedVal)){
+        return false
+    }
     // для того, щоб інші кнопки працювали при натисканні.
     // to make other buttons work when they are clicked.
-    if (operSymbol(displayNum) && !displayedVal.length) {
+    if (operSymbol(displayNum) && !displayedVal.length ||
+    !displayedVal.length && displayNum == '.') {
         return false
     } else if (!displayedVal.length){
         return true
@@ -108,6 +112,15 @@ function operSymbol(displayNum) {
     return displayNum == '×' || displayNum == '÷' || displayNum == '-' || displayNum == '+' || 
     displayNum == '%' || displayNum == '√' || displayNum == '²' || displayNum == 'π';
 }
+
+//функція, що відділяє усі символи від цифр.
+//function that separates all characters from numbers.
+function anySymbol(displayNum) {
+    return displayNum == '×' || displayNum == '÷' || displayNum == '-' || displayNum == '+' || 
+    displayNum == '%' || displayNum == '√' || displayNum == '²' || displayNum == 'π' ||
+    displayNum == '.' || displayNum == '(' || displayNum == ')';
+}
+
 
 
 let deleteCeBtn = document.getElementById('Ce');
@@ -304,12 +317,55 @@ function checkingSqRootAndMinus(displayNum, displayedVal) {
     // if, !displayedVal.length 0 then do not record clicks on symbols beside '√' or '-'.
     if (operSymbol(displayNum) && !displayedVal.length && (displayNum == '√' || displayNum == '-')){
         return true
-    } else if(operSymbol(displayNum) && displayNum == '√' && disArrSq[disArrSq.length-1] == '-' ){
-        // квадратний корінь можна написати після мінуса.
-        // the square root can be written after the minus.
+    } else if(operSymbol(displayNum) && displayNum == '√' && (disArrSq[disArrSq.length-1] == '-' ||
+    disArrSq[disArrSq.length-1] == '+' || disArrSq[disArrSq.length-1] == '÷' || disArrSq[disArrSq.length-1] == '×') ){
+        // квадратний корінь можна написати після мінуса, множення, додавання, ділення.
+        // the square root can be written after the subtraction, multiplication, addition, division..
         return true
     } else {
         return false
     }
     
+}
+
+//функція перевірки на кому.
+//comma check function.
+function pointCheck(displayNum, displayedVal){
+    let disArrPointer = displayedVal.split('');
+    if(displayNum == '.' && anySymbol(disArrPointer[disArrPointer.length-1])){
+        return true
+    } else if(displayNum == '.' &&  disArrPointer[disArrPointer.length-1] == '.'){
+        return true
+    } 
+    if (displayNum == '.' && pointerAndSymbolsSearch(displayedVal)){
+        return true
+    }  
+}
+
+
+// функція перевірки на появу точки в числі один раз.
+// check function for the appearance of a point/dot in a number only once.
+function pointerAndSymbolsSearch(displayedVal){
+    let disArrPointer = displayedVal.split('');
+    let symbolOcurArr = [];
+    let pointOcurArr = [];
+    symbArr = ['-', '+', '×', '÷']
+    for(let i = 0; i < symbArr.length; i++){
+        let str = symbArr[i]
+         for(let j = 0; j < disArrPointer.length; j++){
+        if (str == disArrPointer[j]){
+            symbolOcurArr.push(j)
+        }
+    }
+    }
+   
+    for(let i = 0; i < disArrPointer.length; i++){
+        if ('.' == disArrPointer[i]){
+         pointOcurArr.push(i)
+        }
+    }   
+
+    if (pointOcurArr.length-1 == symbolOcurArr.length){
+        return true
+    } 
 }
