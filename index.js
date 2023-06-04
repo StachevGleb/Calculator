@@ -67,18 +67,22 @@ btnValue.forEach(function (item) {return item.addEventListener('click', displayV
 //function to check the symbols and numbers which we inserting in the calculation field.
 function writeValidation(displayNum, displayedVal) {
     counterClick++
-    let operBool = operSymbol(displayNum)
     // якщо, функція operSymbol вертає параметр displayNum то розбити строку displayedVal через заданий дільник.
     // if the operSymbol function returns the displayNum parameter, then divide the string displayedVal by the given divisor.
     // if (operSymbol(displayNum)) {
     //     operSymbArr.push(displayNum)
     // }
-    // функція для перевірки дужок.
-    // function to check parentheses.
+
+    // if для перевірки дужок.
+    // if statement to check parentheses.
     if (displayNum === ')') {
         useBrackets = true;
-        return bracketsCheck(displayedVal);
+        return rightBracketsCheck(displayedVal);
     }
+    if (displayNum === '('){
+        return leftBracketsCheck(displayedVal);
+    }
+     
     // якщо, !displayedVal.length 0 то фолс, не записувати натискання на символів, крім '√' або '-'.
     // if, !displayedVal.length 0 then do not record clicks on symbols beside '√' or '-'.
     if (checkingSqRootAndMinus(displayNum, displayedVal)) {
@@ -290,7 +294,7 @@ function resultFunc(disArr, operSymbArr) {
 
 //функція перевірки круглих дужок.
 //function to check parentheses.
-function bracketsCheck(displayedVal) {
+function rightBracketsCheck(displayedVal) {
     let disArrBr = displayedVal.split('');
     let counterLeft = 0;
     let counterRight = 0;
@@ -306,6 +310,18 @@ function bracketsCheck(displayedVal) {
     } else {
         return false;
     }
+}
+
+function leftBracketsCheck(displayedVal) {
+    let displayToArray = displayedVal.split('');
+    if (displayToArray[displayToArray.length - 1] === ')'){
+        return false;
+    }else if (displayToArray[displayToArray.length - 1] == '-' || 
+    displayToArray[displayToArray.length - 1] == '+' || 
+    displayToArray[displayToArray.length - 1] == '×' ||
+    displayToArray[displayToArray.length - 1] == '÷'){
+        return true;
+    } 
 }
 
 
