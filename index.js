@@ -67,6 +67,7 @@ btnValue.forEach(function (item) {return item.addEventListener('click', displayV
 //function to check the symbols and numbers which we inserting in the calculation field.
 function writeValidation(displayNum, displayedVal) {
     counterClick++
+    let currentSymbArr = displayedVal.split('');
     // якщо, функція operSymbol вертає параметр displayNum то розбити строку displayedVal через заданий дільник.
     // if the operSymbol function returns the displayNum parameter, then divide the string displayedVal by the given divisor.
     // if (operSymbol(displayNum)) {
@@ -80,22 +81,58 @@ function writeValidation(displayNum, displayedVal) {
         return rightBracketsCheck(displayedVal);
     }
     if (displayNum === '('){
+        if(!displayedVal.length){
+            return true
+        } else{
         return leftBracketsCheck(displayedVal);
+        }
     }
-     
+    
+
     // якщо, !displayedVal.length 0 то фолс, не записувати натискання на символів, крім '√' або '-'.
     // if, !displayedVal.length 0 then do not record clicks on symbols beside '√' or '-'.
-    if (checkingSqRootAndMinus(displayNum, displayedVal)) {
-        return true
+    if (displayNum == '√') {
+        let disArrSq = displayedVal.split('');
+        if(displayNum == '√' && (disArrSq[disArrSq.length-1] == '-' ||
+        disArrSq[disArrSq.length-1] == '+' || disArrSq[disArrSq.length-1] == '÷' ||
+        disArrSq[disArrSq.length-1] == '×') || checkingSqRootAndMinus(displayNum, displayedVal)){
+            // перед квадратним коренем має бути операційний символ.
+            // the square root must be next to an operation symbol.
+            return true
+        } else{
+            return false
+        }
     }  
+    if (displayNum == '-' && checkingSqRootAndMinus(displayNum, displayedVal)) {
+       return true
+    }  
+
+    if(numbersSymbol(displayNum) && (currentSymbArr[currentSymbArr.length-1] == 'π' ||
+     currentSymbArr[currentSymbArr.length-1] == '%' ||
+        currentSymbArr[currentSymbArr.length-1] == '²')){
+            return false
+        }
+
     // перевірка чи попередній символ являється операційним.
     // check if previous character is operational.
     if (operSymbol(displayNum)) {
         let disArr2 = displayedVal.split('');
-        if (operSymbol(displayNum) && operSymbol(disArr2[disArr2.length-1]) || disArr2[disArr2.length-1] == '.') {
-            return false
+        if(regularOperSymbol(displayNum) && (disArr2[disArr2.length-1] == 'π' || disArr2[disArr2.length-1] == '%' ||
+        disArr2[disArr2.length-1] == '²')){
+            // якщо, символ 'π', '%' або '²' то після обов'язково має бути операційний символ.     
+            // if the symbol is 'π', '%' or '²' then there must be an operation symbol after it.
+            return true
         } 
+       
+         
+        if (disArr2[disArr2.length-1] == '(' && (displayNum == '÷' || displayNum == '+' || displayNum == '×' || 
+        displayNum == '²' || displayNum == '%' || displayNum == 'π')){
+            return false
+        }else if (operSymbol(displayNum) && operSymbol(disArr2[disArr2.length-1]) || disArr2[disArr2.length-1] == '.') {
+            return false
+        }
     }
+
     if (pointCheck(displayNum, displayedVal)){
         return false
     }
@@ -108,6 +145,20 @@ function writeValidation(displayNum, displayedVal) {
         return true
     }
     return true
+}
+
+//функція перевірка лише на додавання, множення, ділення, віднімання.
+//function check only for addition, multiplication, division, subtraction.
+function regularOperSymbol(displayNum) {
+    return displayNum == '×' || displayNum == '÷' || displayNum == '-' || displayNum == '+';
+}
+
+//функція, перевіряє displayNum чи це цифрa.
+//function checks whether displayNum is a number.
+function numbersSymbol(displayNum) {
+    return displayNum == '1' || displayNum == '2' || displayNum == '3' || displayNum == '4' || 
+    displayNum == '5' || displayNum == '6' || displayNum == '7' || displayNum == '8' ||
+    displayNum == '9' || displayNum == '0';
 }
 
 //функція, що виводить на екран кнопки операційні в разі натискання (лише на дані кнопки).
@@ -305,6 +356,9 @@ function rightBracketsCheck(displayedVal) {
     if (disArrBr[disArrBr.length - 1] === '(') {
         return false;
     }
+    if(operSymbol(disArrBr[disArrBr.length - 1])){
+        return false
+    }
     if (counterLeft > counterRight) {
         return true;
     } else {
@@ -328,15 +382,9 @@ function leftBracketsCheck(displayedVal) {
 // функція перевірка на попередній символ корінь квадратний або мінус.
 // function checking for the previous square root symbol or minus.
 function checkingSqRootAndMinus(displayNum, displayedVal) {
-    let disArrSq = displayedVal.split('');
     // якщо, !displayedVal.length 0 то фолс, не записувати натискання на символів, крім '√' або '-'.
     // if, !displayedVal.length 0 then do not record clicks on symbols beside '√' or '-'.
-    if (operSymbol(displayNum) && !displayedVal.length && (displayNum == '√' || displayNum == '-')){
-        return true
-    } else if(operSymbol(displayNum) && displayNum == '√' && (disArrSq[disArrSq.length-1] == '-' ||
-    disArrSq[disArrSq.length-1] == '+' || disArrSq[disArrSq.length-1] == '÷' || disArrSq[disArrSq.length-1] == '×') ){
-        // квадратний корінь можна написати після мінуса, множення, додавання, ділення.
-        // the square root can be written after the subtraction, multiplication, addition, division..
+    if (!displayedVal.length && (displayNum == '√' || displayNum == '-')){
         return true
     } else {
         return false
