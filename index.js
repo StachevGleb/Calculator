@@ -68,12 +68,6 @@ btnValue.forEach(function (item) {return item.addEventListener('click', displayV
 function writeValidation(displayNum, displayedVal) {
     counterClick++
     let currentSymbArr = displayedVal.split('');
-    //якщо, функція operSymbol вертає параметр displayNum то розбити строку displayedVal через заданий дільник.
-    // if the operSymbol function returns the displayNum parameter, then divide the string displayedVal by the given divisor.
-    // if (operSymbol(displayNum)) {
-    //     operSymbArr.push(displayNum)
-    // }
-
     //if для перевірки дужок.
     //if statement to check parentheses.
     if (displayNum === ')') {
@@ -103,17 +97,18 @@ function writeValidation(displayNum, displayedVal) {
             return false
         }
     }  
-
+    //перевірка на перший символ на дисплеї - '-'.
+    //check for the first character on the display - '-'.
     if (displayNum == '-' && checkingSqRootAndMinus(displayNum, displayedVal)) {
        return true
     }  
-
+    //заборона цифри після символів: 'π', '%' та '²'.
+    //disallow digit after characters: 'π', '%' and '²'.
     if(numbersSymbol(displayNum) && (currentSymbArr[currentSymbArr.length-1] == 'π' ||
      currentSymbArr[currentSymbArr.length-1] == '%' ||
         currentSymbArr[currentSymbArr.length-1] == '²')){
             return false
         }
-
     //перевірка чи попередній символ являється операційним.
     //check if previous character is operational.
     if (operSymbol(displayNum)) {
@@ -131,8 +126,8 @@ function writeValidation(displayNum, displayedVal) {
             return false
         }
     }
-    //функція перевірки на кому.
-    //comma check function.
+    //перевірки на кому.
+    //comma check.
     if (displayNum == '.'){
         if(anySymbol(currentSymbArr[currentSymbArr.length-1]) ||
         currentSymbArr[currentSymbArr.length-1] == '.'){
