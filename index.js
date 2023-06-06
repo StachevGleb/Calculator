@@ -133,8 +133,15 @@ function writeValidation(displayNum, displayedVal) {
         }
     }
 
-    if (pointCheck(displayNum, displayedVal)){
-        return false
+    if (displayNum == '.'){
+        if(anySymbol(currentSymbArr[currentSymbArr.length-1]) ||
+        currentSymbArr[currentSymbArr.length-1] == '.'){
+            return false
+         } else if(pointerAndSymbolsSearch(displayedVal)){
+            return false
+        } else {
+            return true
+        }
     }
     // для того, щоб інші кнопки працювали при натисканні.
     // to make other buttons work when they are clicked.
@@ -394,17 +401,12 @@ function checkingSqRootAndMinus(displayNum, displayedVal) {
 
 //функція перевірки на кому.
 //comma check function.
-function pointCheck(displayNum, displayedVal){
-    let disArrPointer = displayedVal.split('');
-    if(displayNum == '.' && anySymbol(disArrPointer[disArrPointer.length-1])){
-        return true
-    } else if(displayNum == '.' &&  disArrPointer[disArrPointer.length-1] == '.'){
-        return true
-    } 
-    if (displayNum == '.' && pointerAndSymbolsSearch(displayedVal)){
-        return true
-    }  
-}
+// function pointCheck(displayedVal){
+//     let disArrPointer = displayedVal.split('');
+//     if (pointerAndSymbolsSearch(displayedVal)){
+//         return true
+//     }  
+// }
 
 
 // функція перевірки на появу точки в числі один раз.
@@ -428,8 +430,27 @@ function pointerAndSymbolsSearch(displayedVal){
          pointOcurArr.push(i)
         }
     }   
-
-    if (pointOcurArr.length-1 == symbolOcurArr.length){
+    // console.log("symbolOcurArr ", symbolOcurArr)
+    // console.log("pointOcurArr ", pointOcurArr)
+     
+    if (pointOcurArr.length > 1 && pointOcurArr[pointOcurArr.length-1] > symbolOcurArr[symbolOcurArr.length-1] &&
+         pointOcurArr[pointOcurArr.length-2] < symbolOcurArr[symbolOcurArr.length-1]){
+        console.log("symbolOcurArr ", symbolOcurArr)
+        console.log("pointOcurArr ", pointOcurArr)
+        console.log("pointOcurArr last ", pointOcurArr[pointOcurArr.length-1])
+        console.log("symbolOcurArr last ", symbolOcurArr[symbolOcurArr.length-1])
+        console.log("pointOcurArr before ", pointOcurArr[pointOcurArr.length-2])
+        if (pointOcurArr[pointOcurArr.length-1] < symbolOcurArr[symbolOcurArr.length-1]){
+            return false
+        } else{
+            return true
+        }
+    } else if (symbolOcurArr.length == 0 && pointOcurArr.length > 0){
         return true
-    } 
+    } else {  
+        return false
+    }
+    // console.log("symbolOcurArr ", symbolOcurArr)
+    // console.log("pointOcurArr ", pointOcurArr)
+  
 }
