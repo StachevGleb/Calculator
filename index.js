@@ -81,15 +81,14 @@ function writeValidation(displayNum, displayedVal) {
         return leftBracketsCheck(displayedVal);
         }
     }
-    
-
     //якщо, !displayedVal.length 0 то фолс, не записувати натискання на символів, крім '√' або '-'.
     //if, !displayedVal.length 0 then do not record clicks on symbols beside '√' or '-'.
     if (displayNum == '√') {
         let disArrSq = displayedVal.split('');
         if(displayNum == '√' && (disArrSq[disArrSq.length-1] == '-' ||
         disArrSq[disArrSq.length-1] == '+' || disArrSq[disArrSq.length-1] == '÷' ||
-        disArrSq[disArrSq.length-1] == '×') || checkingSqRootAndMinus(displayNum, displayedVal)){
+        disArrSq[disArrSq.length-1] == '×') || checkingSqRootAndMinus(displayNum, displayedVal) ||
+        disArrSq[disArrSq.length-1] == '('){
             //перед квадратним коренем має бути операційний символ.
             //the square root must be next to an operation symbol.
             return true
@@ -129,10 +128,13 @@ function writeValidation(displayNum, displayedVal) {
     //перевірки на кому.
     //comma check.
     if (displayNum == '.'){
+        let result = helpPointFuncForSeparation(displayedVal);
+        disArrPointer = result.disArrPointer;
+        symbolOcurArr = result.symbolOcurArr;
         if(anySymbol(currentSymbArr[currentSymbArr.length-1]) ||
         currentSymbArr[currentSymbArr.length-1] == '.'){
             return false
-         } else if(pointerAndSymbolsSearch(displayedVal)){
+         } else if(pointerAndSymbolsSearch(displayedVal, disArrPointer, symbolOcurArr)){
             return false
         } else {
             return true
@@ -212,7 +214,6 @@ resultBtn.addEventListener('click', equalFunction);
 
 //функція equal, що викликає результативну функцію.
 //equal function that calls the resulting function
-
 function equalFunction() {
     let displayText = display.innerText;
     let disArr = displayText.split(/[^\d.]/g);
@@ -256,7 +257,6 @@ function resultFunc(disArr, operSymbArr) {
 
     console.log("equalFunc", resArr);
     // console.log(operSymbArr2);
-
     // console.log(operSymbArr2.indexOf('×'))
     if (operSymbArr2.length === 0) {
         display.innerText = disArr[0];
@@ -380,7 +380,6 @@ function leftBracketsCheck(displayedVal) {
     } 
 }
 
-
 //функція перевірка на попередній символ корінь квадратний або мінус.
 //function checking for the previous square root symbol or minus.
 function checkingSqRootAndMinus(displayNum, displayedVal) {
@@ -396,29 +395,8 @@ function checkingSqRootAndMinus(displayNum, displayedVal) {
 
 //функція перевірки на появу точки в числі один раз.
 //check function for the appearance of a point/dot in a number only once.
-function pointerAndSymbolsSearch(displayedVal){
-    let disArrPointerDraft = displayedVal.split('');
-    let disArrPointer = []
-    //якщо, першим символом йде мінус видаляєм його з масива, щоб зпрацювала подальша логіка.
-    //if the first character is '-', we remove it from the array so that further logic works.
-    if(disArrPointerDraft[0] == '-'){
-        disArrPointerDraft.splice(0, 1)
-        disArrPointer = disArrPointerDraft
-    } else{
-        disArrPointer = disArrPointerDraft
-    }
-    let symbolOcurArr = [];
+function pointerAndSymbolsSearch(displayedVal, disArrPointer, symbolOcurArr){
     let pointOcurArr = [];
-    symbArr = ['-', '+', '×', '÷']
-    for(let i = 0; i < symbArr.length; i++){
-        let str = symbArr[i]
-         for(let j = 0; j < disArrPointer.length; j++){
-        if (str == disArrPointer[j]){
-            symbolOcurArr.push(j)
-        }
-    }
-    }
-   
     for(let i = 0; i < disArrPointer.length; i++){
         if ('.' == disArrPointer[i]){
          pointOcurArr.push(i)
@@ -430,8 +408,8 @@ function pointerAndSymbolsSearch(displayedVal){
     // console.log("pointOcurArr ", pointOcurArr)   
     if ((displayedVal.length > pointOcurArr[pointOcurArr.length-1]) &&
         (pointOcurArr[pointOcurArr.length-1] > symbolOcurArr[symbolOcurArr.length-1])){
-        // console.log("symbolOcurArr ", symbolOcurArr)
-        // console.log("pointOcurArr ", pointOcurArr)
+        console.log("symbolOcurArr ", symbolOcurArr)
+        console.log("pointOcurArr ", pointOcurArr)
         // console.log("pointOcurArr last ", pointOcurArr[pointOcurArr.length-1])
         // console.log("symbolOcurArr last ", symbolOcurArr[symbolOcurArr.length-1])
         // console.log("pointOcurArr before ", pointOcurArr[pointOcurArr.length-2])
@@ -439,7 +417,44 @@ function pointerAndSymbolsSearch(displayedVal){
          
     } else if (symbolOcurArr.length == 0 && pointOcurArr.length > 0){
         return true
-    } else {  
+    } else if (!displayedVal.length){
+        return true
+    } else{  
         return false
     }
 }
+
+function helpPointFuncForSeparation(displayedVal) {
+    let symbolOcurArr = [];
+    let disArrPointer = [];
+    let disArrPointerDraft = displayedVal.split('');
+    //якщо, першим символом йде мінус видаляєм його з масива, щоб зпрацювала подальша логіка.
+    //if the first character is '-', we remove it from the array so that further logic works.
+    if (disArrPointerDraft[0] == '-') {
+        disArrPointerDraft.splice(0, 1)
+        disArrPointer = disArrPointerDraft
+    } else {
+        disArrPointer = disArrPointerDraft
+    }
+    symbArr = ['-', '+', '×', '÷']
+    for (let i = 0; i < symbArr.length; i++) {
+        let str = symbArr[i]
+        for (let j = 0; j < disArrPointer.length; j++) {
+            if (str == disArrPointer[j]) {
+                symbolOcurArr.push(j)
+                symbolOcurArr.sort((a, b) => a - b);
+            }
+        }
+    }
+    return { disArrPointer, symbolOcurArr };
+}
+
+
+
+ 
+
+
+
+
+
+
