@@ -223,4 +223,4 @@ function helpPointFuncForSeparation(displayedVal) {
 }
 
 
-export { writeValidation } 
+export { writeValidation, operSymbol } 
