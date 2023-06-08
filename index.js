@@ -6,10 +6,12 @@ let topBtn = document.getElementById('topBtn');
 let bottomBtn = document.getElementById('bottomBtn');
 let backSpaceBtn = document.getElementById('backSpaceBtn');
 let bracketsBut = document.getElementsByClassName('brackets');
+let useBrackets = false
 
 createBtn();
 
 //створення кнопок.
+//buttons creation.
 function createBtn() {
     for (let i = 0; i < 9; i++) {
         btnWrap.innerHTML += `<button dataBtn="${i + 1}" id="${i + 1}" class="button${i + 1} button"><p class="pNum">${i + 1}</p></button>`
@@ -35,7 +37,6 @@ function createBtn() {
 let addMenu = document.getElementById('addMenu');
 let operSymbArr = [];
 let operSymbArr2 = [];
-let useBrackets = false;
 
 //зміна операційних кнопок, через кнопку ("...").
 //changing operating buttons using this ("...").
@@ -50,6 +51,7 @@ addMenu.addEventListener('click', changeableBtnFunc);
 //adding characters to the display if they passing the verification function writeValidation.
 function displayValue() {
     let displayNum = this.getAttribute('dataBtn');
+    
     //якщо, пройшов (символ) перевірку writeValidation додати його до вже існуючого текста на дисплей.
     //if, character passed checking writeValidation add it to the already existing text on the display.
     if (writeValidation(displayNum, display.innerText)) {
@@ -63,8 +65,6 @@ let btnValue = document.querySelectorAll('.button');
 //метод масива, що при кліку на будь-який .button запускає displayValue.
 //array method - when clicking on any .button starts displayValue.
 btnValue.forEach(function (item) {return item.addEventListener('click', displayValue)});
-
-
 
 let deleteCeBtn = document.getElementById('Ce');
 
@@ -91,7 +91,6 @@ function backSpaceBtnFunc() {
 
 backSpaceBtn.addEventListener('click', backSpaceBtnFunc)
 
-
 let resultBtn = document.getElementById('resultBtn');
 
 resultBtn.addEventListener('click', equalFunction);
@@ -100,7 +99,15 @@ resultBtn.addEventListener('click', equalFunction);
 //equal function that calls the resulting function
 function equalFunction() {
     let displayText = display.innerText;
+     //перевірка чи display.innerText має дужки в своєму складі.
+    //check whether display.innerText has parentheses in its structure.
+    for(let i=0;i<displayText.length-1;i++){
+        if (displayText[i] == '(' || displayText[i] == ')'){
+            useBrackets = true
+        }
+    }
     let disArr = displayText.split(/[^\d.]/g);
+    console.log(disArr)
     if (useBrackets) {
         console.log(useBrackets, 'useBrackets');
         testBracketsFunc(displayText);
@@ -116,7 +123,6 @@ function equalFunction() {
 }
 
 function testBracketsFunc(displayText) {
-
     let test = displayText.split('(')[displayText.split('(').length - 1].split(')');
     console.log(test, 'test');
     let test2 = ["6+2)"];
@@ -199,6 +205,8 @@ function resultFunc(disArr, operSymbArr) {
         resultFunc(resArr, operSymbArr2);
         console.log("hello word");S
     }
+
+
     // for (let i = 0; operSymbArr.length > i; i++) {
     //     if (operSymbArr[i] === '×') {
     //         resProp = +resArr[i] * +resArr[i+1];

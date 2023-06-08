@@ -1,4 +1,5 @@
 let counterClick = 0;
+
 //функція перевірки правильності введення цифр і символів в розрахункове поле.
 //function to check the symbols and numbers which we inserting in the calculation field.
 function writeValidation(displayNum, displayedVal) {
@@ -7,11 +8,10 @@ function writeValidation(displayNum, displayedVal) {
     //if для перевірки дужок.
     //if statement to check parentheses.
     if (displayNum === ')') {
-        useBrackets = true;
-        return rightBracketsCheck(displayedVal);
+         return rightBracketsCheck(displayedVal);
     }
     if (displayNum === '('){
-        if(!displayedVal.length){
+         if(!displayedVal.length){
             return true
         } else{
         return leftBracketsCheck(displayedVal);
@@ -81,7 +81,9 @@ function writeValidation(displayNum, displayedVal) {
     if (operSymbol(displayNum) && !displayedVal.length ||
     !displayedVal.length && displayNum == '.') {
         return false
-    } else if (!displayedVal.length){
+    } else if (numbersSymbol(displayNum) && currentSymbArr[currentSymbArr.length-1] == ')'){
+        return false
+    }else if (!displayedVal.length){
         return true
     }
     return true
