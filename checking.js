@@ -76,6 +76,7 @@ function writeValidation(displayNum, displayedVal) {
             return true
         }
     }
+
     //для того, щоб інші кнопки працювали при натисканні.
     //to make other buttons work when they are clicked.
     if (operSymbol(displayNum) && !displayedVal.length ||

@@ -115,15 +115,15 @@ function equalFunction() {
     }).filter(function(element) {
     return element !== '';
     });
+    disArr = input
+    // console.log(output)
 
-    console.log(output)
-
-    for (let i = 0; i < displayText.length-1; i++) {
+    for (let i = 0; i < displayText.length; i++) {
         if (operSymbol(displayText[i])){
             operSymbArr.push(displayText[i])
         }
     }
-    console.log(operSymbArr)
+    // console.log(operSymbArr)
 
     if (useBrackets) {
         console.log(useBrackets, 'useBrackets');
@@ -131,12 +131,8 @@ function equalFunction() {
         return
     }
 
-    console.log(output, 'changed')
-
-    // operSymbArr = disArr.filter(function(item, index, array){
-    // return item == "+" || item == "-" || item == "÷" || item == "×";
-    // });
-    // console.log(operSymbArr);
+    // console.log(output, 'changed')
+ 
     resultFunc(disArr, operSymbArr);
 }
 
@@ -163,8 +159,12 @@ function resultFunc(disArr, operSymbArr) {
     let percent = operSymbArr2.indexOf('%');
     let numberPi = operSymbArr2.indexOf('π');
     let square = operSymbArr2.indexOf('²');
+    
+    console.log('operSymbArr2  ',operSymbArr2)
+    console.log('disArr  ', disArr)
+    console.log('square  ', square)
 
-    console.log("equalFunc", resArr);
+    // console.log("equalFunc", resArr);
     // console.log(operSymbArr2);
     // console.log(operSymbArr2.indexOf('×'))
     if (operSymbArr2.length === 0) {
@@ -183,13 +183,13 @@ function resultFunc(disArr, operSymbArr) {
         operSymbArr2.splice(square, 1);
         resultFunc(resArr, operSymbArr2);
     }
-    if (percent >= 0 && operSymbArr2.length !== 0) {
-        resProp = ((+resArr[percent] * 0.01) * +resArr[percent - 1]);
+    if (percent >= 0 && operSymbArr2.length > 1) {
+        resProp = ((+resArr[percent] * 0.01) * +resArr[percent + 2]);
         console.log(percent);
-        resArr.splice(percent, 1, resProp);
+        resArr.splice(percent, 2, resProp);
         operSymbArr2.splice(percent, 1);
         resultFunc(resArr, operSymbArr2);
-    }
+    }  
     if (sqRoot >= 0 && operSymbArr2.length !== 0) {
         resProp = Math.sqrt(resArr[sqRoot + 1]);
         resArr.splice(sqRoot, 2, resProp);
@@ -222,7 +222,7 @@ function resultFunc(disArr, operSymbArr) {
         resArr.splice(minus, 2, resProp);
         operSymbArr2.splice(minus, 1);
         resultFunc(resArr, operSymbArr2);
-        console.log("hello word");S
+        // console.log("hello world");
     }
 
 
