@@ -99,23 +99,36 @@ resultBtn.addEventListener('click', equalFunction);
 //equal function that calls the resulting function
 function equalFunction() {
     let displayText = display.innerText;
+    let parentheses = 0
+    let closeBracketArr = []
     //перевірка чи display.innerText має дужки в своєму складі.
     //check whether display.innerText has parentheses in its structure.
     for(let i=0;i<displayText.length-1;i++){
-        if (displayText[i] == '(' || displayText[i] == ')'){
+        if (displayText[i] == '('){
+            parentheses++
             useBrackets = true
         }
+        if (displayText[i] == ')'){
+             closeBracketArr.push(displayText[i+1])
+        }
     }
+
+
+    let disArr = itemsClearCreator(displayText);
+    
+     
+
+
     //з display.innerText отримати айтемс у вигляді чисел або флоат чисел, без будь яких символів.
     //from display.innerText get items in the form of numbers or float numbers, without any symbols.
-    let disArr = displayText.split(/[^\d.()]/g);
-    let input = disArr;
-    let output = input.map(function(element) {
-    return element.replace(/[\(\)]/g, '');
-    }).filter(function(element) {
-    return element !== '';
-    });
-    disArr = input
+    // let disArr = displayText.split(/[^\d.()]/g);
+    // let input = disArr;
+    // let output = input.map(function(element) {
+    // return element.replace(/[\(\)]/g, '');
+    // }).filter(function(element) {
+    // return element !== '';
+    // });
+    // disArr = input
     // console.log(output)
 
     for (let i = 0; i < displayText.length; i++) {
@@ -124,10 +137,10 @@ function equalFunction() {
         }
     }
     // console.log(operSymbArr)
-
+    // console.log(parentheses)
     if (useBrackets) {
-        console.log(useBrackets, 'useBrackets');
-        testBracketsFunc(displayText);
+        // console.log(useBrackets, 'useBrackets');
+        testBracketsFunc(disArr, displayText, closeBracketArr);
         return
     }
 
@@ -136,13 +149,24 @@ function equalFunction() {
     resultFunc(disArr, operSymbArr);
 }
 
-function testBracketsFunc(displayText) {
-   
-    let result = displayText.match(/\(([^)]+)\)/g).map(function(element) {
-      return element.substring(1, element.length - 1);
+function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
+    let operSymbArr3 = []
+    let resInPerenth = []
+    displayText.match(/\(([^)]+)\)/g).map(function(element) {
+    let beforeCounting =  element.substring(1, element.length - 1);
+    for (let i = 0; i < beforeCounting.length; i++) {
+        if (operSymbol(beforeCounting[i])){
+            operSymbArr3.push(beforeCounting[i])
+        }
+       
+    }
+    let disArr = itemsClearCreator(beforeCounting);
+    resultFunc(disArr, operSymbArr3);
+    let displayText = display.innerText
+    resInPerenth.push(displayText)
     });
-    
-    console.log(result);
+    console.log(resInPerenth)
+    resultFunc(resInPerenth, closeBracketArr);
 }
 
 //функція, що проводить розрахунки введених даних.
@@ -160,9 +184,9 @@ function resultFunc(disArr, operSymbArr) {
     let numberPi = operSymbArr2.indexOf('π');
     let square = operSymbArr2.indexOf('²');
     
-    console.log('operSymbArr2  ',operSymbArr2)
-    console.log('disArr  ', disArr)
-    console.log('square  ', square)
+    // console.log('operSymbArr2 res  ',operSymbArr2)
+    // console.log('disArr res  ', disArr)
+    // console.log('square  ', square)
 
     // console.log("equalFunc", resArr);
     // console.log(operSymbArr2);
@@ -256,7 +280,17 @@ function resultFunc(disArr, operSymbArr) {
 //     }
 }
 
-
+//з display.innerText отримати айтемс у вигляді чисел або флоат чисел, без будь яких символів.
+//from display.innerText get items in the form of numbers or float numbers, without any symbols.
+function itemsClearCreator(displayText){
+    let disArr = displayText.split(/[^\d.()]/g);
+    let output = disArr.map(function(element) {
+    return element.replace(/[\(\)]/g, '');
+    }).filter(function(element) {
+    return element !== '';
+    });
+    return disArr
+}
  
 
 
