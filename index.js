@@ -129,8 +129,6 @@ function equalFunction() {
     if(operSymbArr.length > disArr.length){
         operSymbArr.splice(disArr.length-1, operSymbArr.length-disArr.length)
     }
-    console.log(closeBracketArr)
-    console.log(disArr)
     //в разі якщо, є інпут дужок.
     //if there is an input of parentheses.
     if (useBrackets) {
@@ -190,22 +188,33 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     for(let i=0;i<resInParenth.length;i++){
         closeBracketArr.splice(i * 2 + 1, 0, resInParenth[i])
     }
+    console.log(resInParenth)
+
     closeBracketArr.join('')
     let newStrArr= []
+    console.log(arithmeticExpression)
+
     newStrArr = arithmeticExpression.split('')
+    console.log(newStrArr)
+
     for(let i=0;i < newStrArr.length;i++){
-        if(operSymbol(newStrArr[i]) && operSymbol(newStrArr[i+1])  ){
+        if(operSymbol(newStrArr[i]) && operSymbol(newStrArr[i+1])){
             newStrArr.splice(i+1, 0, resInParenth[0])
             resInParenth.splice(0, 1)
         } else if (operSymbol(newStrArr[newStrArr.length-1])){
             newStrArr.splice(newStrArr.length, 0, resInParenth[resInParenth.length-1])
             resInParenth.splice(resInParenth.length-1, 1)
+        }else if (operSymbol(newStrArr[0])){
+            newStrArr.splice(0, 0, resInParenth[0])
+            resInParenth.splice(0, 1)
         }
     }
     let afterParentCountStr = newStrArr.join('')
     //відділяєм символи від дужок з цифрами.
     //separate symbols from parentheses with numbers.
     let disArrParent = itemsClearCreator(afterParentCountStr)
+    console.log(disArrParent)
+
     //отримуєм масив з опер. символами які знаходяться в дужках.
     //receiving an array with operation symbols that are in parentheses.
     let operSymbArrParent = []  
@@ -217,12 +226,14 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     if(operSymbArrParent.length > disArrParent.length){
         operSymbArrParent.splice(disArrParent.length-1, operSymbArrParent.length-disArrParent.length)
     }
+    console.log(disArrParent)
+    console.log(operSymbArrParent)
+
     //обраховуєм результат для кожних із дужок і із іншими цифрами.
     //calculate the result for each of the parentheses with other numbers.
      resultFunc(disArrParent, operSymbArrParent);
      
 }
-
 
 //функція, що проводить розрахунки введених даних.
 //function that calculates inputed data.
