@@ -147,7 +147,7 @@ function equalFunction() {
 //testBracketsFunc function that calls the resulting function (if input with parentheses).
 function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     let operSymbArr3 = []
-    let resInPerenth = []
+    let resInParenth = []
     let parenthesesPattern = /\(([^)]+)\)/g;
     //видаляємо дужки з string.
     //delete parenthese from the string.
@@ -166,11 +166,11 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     //відділяєм символи від дужок з цифрами.
     //separate symbols from parentheses with numbers.
     let disArr = itemsClearCreator(beforeCounting);
-    //обраховуєм результат для кожних із дужок і зберігаєм його в resInPerenth.
-    //calculate the result for every of the parentheses and saving it in resInPerenth.
+    //обраховуєм результат для кожних із дужок і зберігаєм його в resInParenth.
+    //calculate the result for every of the parentheses and saving it in resInParenth.
     resultFunc(disArr, operSymbArr3);
     let displayText = display.innerText
-    resInPerenth.push(displayText)
+    resInParenth.push(displayText)
     });
     
     // let str = displayText;
@@ -180,41 +180,46 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     // while (index !== -1) {
     // index = str.indexOf(searchValue, index + 1);
     // }
- 
-    if(resInPerenth.length > closeBracketArr.length){
+    // console.log (resInParenth)
+    // console.log (closeBracketArr)
+    if(resInParenth.length > closeBracketArr.length){
         closeBracketArr.splice(0, 0,'+')
     }
-
-    for(let i=0;i<resInPerenth.length;i++){
-        closeBracketArr.splice(i * 2 + 1, 0, resInPerenth[i])
+    //формуєм string для того, щоб з'єднати числа обраховані з середини дужок із тими які поза ними - afterParentCountStr.
+    //form a string in order to connect the numbers calculated from the parentheses with numbers outside of them - afterParentCountStr.
+    for(let i=0;i<resInParenth.length;i++){
+        closeBracketArr.splice(i * 2 + 1, 0, resInParenth[i])
     }
     closeBracketArr.join('')
-
     let newStrArr= []
     newStrArr = arithmeticExpression.split('')
     for(let i=0;i < newStrArr.length;i++){
         if(operSymbol(newStrArr[i]) && operSymbol(newStrArr[i+1])  ){
-            newStrArr.splice(i+1, 0, resInPerenth[0])
-            resInPerenth.splice(0, 1)
-           
+            newStrArr.splice(i+1, 0, resInParenth[0])
+            resInParenth.splice(0, 1)
         } else if (operSymbol(newStrArr[newStrArr.length-1])){
-            newStrArr.splice(newStrArr.length, 0, resInPerenth[resInPerenth.length-1])
-            resInPerenth.splice(resInPerenth.length-1, 1)
+            newStrArr.splice(newStrArr.length, 0, resInParenth[resInParenth.length-1])
+            resInParenth.splice(resInParenth.length-1, 1)
         }
     }
-    let afterPerentCountStr = newStrArr.join('')
-    let disArrPerent = itemsClearCreator(afterPerentCountStr)
-    let operSymbArrPerent = []  
-
-    for (let i = 0; i < afterPerentCountStr.length; i++) {
-        if (operSymbol(afterPerentCountStr[i])){
-            operSymbArrPerent.push(afterPerentCountStr[i])
+    let afterParentCountStr = newStrArr.join('')
+    //відділяєм символи від дужок з цифрами.
+    //separate symbols from parentheses with numbers.
+    let disArrParent = itemsClearCreator(afterParentCountStr)
+    //отримуєм масив з опер. символами які знаходяться в дужках.
+    //receiving an array with operation symbols that are in parentheses.
+    let operSymbArrParent = []  
+    for (let i = 0; i < afterParentCountStr.length; i++) {
+        if (operSymbol(afterParentCountStr[i])){
+            operSymbArrParent.push(afterParentCountStr[i])
         }
     }
-    if(operSymbArrPerent.length > disArrPerent.length){
-        operSymbArrPerent.splice(disArrPerent.length-1, operSymbArrPerent.length-disArrPerent.length)
+    if(operSymbArrParent.length > disArrParent.length){
+        operSymbArrParent.splice(disArrParent.length-1, operSymbArrParent.length-disArrParent.length)
     }
-     resultFunc(disArrPerent, operSymbArrPerent);
+    //обраховуєм результат для кожних із дужок і із іншими цифрами.
+    //calculate the result for each of the parentheses with other numbers.
+     resultFunc(disArrParent, operSymbArrParent);
      
 }
 
