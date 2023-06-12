@@ -107,35 +107,27 @@ function equalFunction() {
         if (displayText[i] == '('){
             parentheses++
             useBrackets = true
-        }
-        if (displayText[i] == ')'){
-             closeBracketArr.push(displayText[i+1])
+            if(displayText[i] == '(' && i == 0 || parentheses == 1 && displayText[i-1] != '-' ){
+                 console.log(displayText[i-1], ' symbol in first appearence of "("')
+            } else {
+            closeBracketArr.push(displayText[i-1])
+            }
         }
     }
 
 
     let disArr = itemsClearCreator(displayText);
-    
      
-
-
-    //з display.innerText отримати айтемс у вигляді чисел або флоат чисел, без будь яких символів.
-    //from display.innerText get items in the form of numbers or float numbers, without any symbols.
-    // let disArr = displayText.split(/[^\d.()]/g);
-    // let input = disArr;
-    // let output = input.map(function(element) {
-    // return element.replace(/[\(\)]/g, '');
-    // }).filter(function(element) {
-    // return element !== '';
-    // });
-    // disArr = input
-    // console.log(output)
-
     for (let i = 0; i < displayText.length; i++) {
         if (operSymbol(displayText[i])){
             operSymbArr.push(displayText[i])
         }
     }
+    if(operSymbArr.length > disArr.length){
+        operSymbArr.splice(disArr.length-1, operSymbArr.length-disArr.length)
+    }
+    // console.log(displayText)
+    console.log(disArr)
     // console.log(operSymbArr)
     // console.log(parentheses)
     if (useBrackets) {
@@ -148,11 +140,24 @@ function equalFunction() {
  
     resultFunc(disArr, operSymbArr);
 }
+ 
+
+
 
 function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     let operSymbArr3 = []
     let resInPerenth = []
-    displayText.match(/\(([^)]+)\)/g).map(function(element) {
+    let parenthesesPattern = /\(([^)]+)\)/g;
+
+    let outputString = displayText.replace(parenthesesPattern, '');
+    let arithmeticExpression = displayText.replace(parenthesesPattern, '').trim();
+    console.log(arithmeticExpression)
+
+
+   
+
+
+    displayText.match(parenthesesPattern).map(function(element) {
     let beforeCounting =  element.substring(1, element.length - 1);
     for (let i = 0; i < beforeCounting.length; i++) {
         if (operSymbol(beforeCounting[i])){
@@ -165,9 +170,86 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     let displayText = display.innerText
     resInPerenth.push(displayText)
     });
+    
+    console.log(displayText)
     console.log(resInPerenth)
-    resultFunc(resInPerenth, closeBracketArr);
+    console.log(closeBracketArr)
+
+
+
+    let str = displayText;
+    let searchValue = arithmeticExpression;
+
+    let index = str.indexOf(searchValue);
+    while (index !== -1) {
+    index = str.indexOf(searchValue, index + 1);
+    }
+    console.log(index);
+
+
+
+
+    if(resInPerenth.length > closeBracketArr.length){
+        closeBracketArr.splice(0, 0,'+')
+    }
+
+    console.log(resInPerenth, '   after')
+    console.log(closeBracketArr, '   after')
+
+    for(let i=0;i<resInPerenth.length;i++){
+        closeBracketArr.splice(i * 2 + 1, 0, resInPerenth[i])
+    }
+    let newPartofString = closeBracketArr.join('')
+    console.log(resInPerenth, '   after')
+    console.log(closeBracketArr, '   after')
+    console.log(newPartofString)
+
+    // newPartofString = arithmeticExpression + newPartofString
+
+    // console.log(newPartofString, 'all string')
+
+    let newStrArr= []
+    newStrArr = arithmeticExpression.split('')
+    console.log(newStrArr, '    OLD')
+    console.log(resInPerenth)
+
+    for(let i=0;i < newStrArr.length;i++){
+        if(operSymbol(newStrArr[i]) && operSymbol(newStrArr[i+1])  ){
+            // newStrArr.splice(i, 0, closeBracketArr[0])
+            console.log(i)
+            console.log(resInPerenth)
+            console.log(resInPerenth[0])
+            newStrArr.splice(i+1, 0, resInPerenth[0])
+            resInPerenth.splice(0, 1)
+            // console.log(resInPerenth[0])
+            // newStrArr.splice(i, 0, closeBracketArr[1])
+            // closeBracketArr.splice(0, 2)
+        } else if (operSymbol(newStrArr[newStrArr.length-1])){
+            newStrArr.splice(newStrArr.length, 0, resInPerenth[1])
+            resInPerenth.splice(1, 1)
+        }
+    }
+    console.log(newStrArr, '    NEW')
+    let afterPerentCountStr = newStrArr.join('')
+    let disArrPerent = itemsClearCreator(afterPerentCountStr)
+    let operSymbArrPerent = []  
+
+    for (let i = 0; i < afterPerentCountStr.length; i++) {
+        if (operSymbol(afterPerentCountStr[i])){
+            operSymbArrPerent.push(afterPerentCountStr[i])
+        }
+    }
+    if(operSymbArrPerent.length > disArrPerent.length){
+        operSymbArrPerent.splice(disArrPerent.length-1, operSymbArrPerent.length-disArrPerent.length)
+    }
+    console.log(disArrPerent)
+    console.log(operSymbArrPerent)
+
+     resultFunc(disArrPerent, operSymbArrPerent);
+     
 }
+
+
 
 //функція, що проводить розрахунки введених даних.
 //function that calculates inputed data.
@@ -283,7 +365,7 @@ function resultFunc(disArr, operSymbArr) {
 //з display.innerText отримати айтемс у вигляді чисел або флоат чисел, без будь яких символів.
 //from display.innerText get items in the form of numbers or float numbers, without any symbols.
 function itemsClearCreator(displayText){
-    let disArr = displayText.split(/[^\d.()]/g);
+     let disArr = displayText.split(/[^\d.()]/g);
     let output = disArr.map(function(element) {
     return element.replace(/[\(\)]/g, '');
     }).filter(function(element) {
@@ -291,6 +373,8 @@ function itemsClearCreator(displayText){
     });
     return disArr
 }
+ 
+
  
 
 
