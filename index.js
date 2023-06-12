@@ -126,22 +126,13 @@ function equalFunction() {
     if(operSymbArr.length > disArr.length){
         operSymbArr.splice(disArr.length-1, operSymbArr.length-disArr.length)
     }
-    // console.log(displayText)
-    console.log(disArr)
-    // console.log(operSymbArr)
-    // console.log(parentheses)
     if (useBrackets) {
-        // console.log(useBrackets, 'useBrackets');
         testBracketsFunc(disArr, displayText, closeBracketArr);
+        useBrackets = false
         return
     }
-
-    // console.log(output, 'changed')
- 
     resultFunc(disArr, operSymbArr);
 }
- 
-
 
 
 function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
@@ -149,13 +140,8 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     let resInPerenth = []
     let parenthesesPattern = /\(([^)]+)\)/g;
 
-    let outputString = displayText.replace(parenthesesPattern, '');
+    displayText.replace(parenthesesPattern, '');
     let arithmeticExpression = displayText.replace(parenthesesPattern, '').trim();
-    console.log(arithmeticExpression)
-
-
-   
-
 
     displayText.match(parenthesesPattern).map(function(element) {
     let beforeCounting =  element.substring(1, element.length - 1);
@@ -171,12 +157,6 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     resInPerenth.push(displayText)
     });
     
-    console.log(displayText)
-    console.log(resInPerenth)
-    console.log(closeBracketArr)
-
-
-
     let str = displayText;
     let searchValue = arithmeticExpression;
 
@@ -184,52 +164,28 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     while (index !== -1) {
     index = str.indexOf(searchValue, index + 1);
     }
-    console.log(index);
-
-
-
-
+ 
     if(resInPerenth.length > closeBracketArr.length){
         closeBracketArr.splice(0, 0,'+')
     }
 
-    console.log(resInPerenth, '   after')
-    console.log(closeBracketArr, '   after')
-
     for(let i=0;i<resInPerenth.length;i++){
         closeBracketArr.splice(i * 2 + 1, 0, resInPerenth[i])
     }
-    let newPartofString = closeBracketArr.join('')
-    console.log(resInPerenth, '   after')
-    console.log(closeBracketArr, '   after')
-    console.log(newPartofString)
-
-    // newPartofString = arithmeticExpression + newPartofString
-
-    // console.log(newPartofString, 'all string')
+    closeBracketArr.join('')
 
     let newStrArr= []
     newStrArr = arithmeticExpression.split('')
-    console.log(newStrArr, '    OLD')
-    console.log(resInPerenth)
-
     for(let i=0;i < newStrArr.length;i++){
         if(operSymbol(newStrArr[i]) && operSymbol(newStrArr[i+1])  ){
-            // newStrArr.splice(i, 0, closeBracketArr[0])
-            console.log(i)
-            console.log(resInPerenth)
-            console.log(resInPerenth[0])
             newStrArr.splice(i+1, 0, resInPerenth[0])
             resInPerenth.splice(0, 1)
-            // console.log(resInPerenth[0])
-            // newStrArr.splice(i, 0, closeBracketArr[1])
-            // closeBracketArr.splice(0, 2)
+           
         } else if (operSymbol(newStrArr[newStrArr.length-1])){
             newStrArr.splice(newStrArr.length, 0, resInPerenth[resInPerenth.length-1])
             resInPerenth.splice(resInPerenth.length-1, 1)
         }
     }
-    console.log(newStrArr, '    NEW')
     let afterPerentCountStr = newStrArr.join('')
     let disArrPerent = itemsClearCreator(afterPerentCountStr)
     let operSymbArrPerent = []  
@@ -242,13 +198,9 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     if(operSymbArrPerent.length > disArrPerent.length){
         operSymbArrPerent.splice(disArrPerent.length-1, operSymbArrPerent.length-disArrPerent.length)
     }
-    console.log(disArrPerent)
-    console.log(operSymbArrPerent)
-
      resultFunc(disArrPerent, operSymbArrPerent);
      
 }
-
 
 
 //функція, що проводить розрахунки введених даних.
@@ -265,16 +217,9 @@ function resultFunc(disArr, operSymbArr) {
     let percent = operSymbArr2.indexOf('%');
     let numberPi = operSymbArr2.indexOf('π');
     let square = operSymbArr2.indexOf('²');
-    
-    // console.log('operSymbArr2 res  ',operSymbArr2)
-    // console.log('disArr res  ', disArr)
-    // console.log('square  ', square)
-
-    // console.log("equalFunc", resArr);
-    // console.log(operSymbArr2);
-    // console.log(operSymbArr2.indexOf('×'))
+  
     if (operSymbArr2.length === 0) {
-        display.innerText = disArr[0];
+        display.innerText = Math.round(disArr[0] * 1e10) / 1e10;
         return;
     }
     if (numberPi >= 0 && operSymbArr2.length !== 0) {
@@ -328,38 +273,7 @@ function resultFunc(disArr, operSymbArr) {
         resArr.splice(minus, 2, resProp);
         operSymbArr2.splice(minus, 1);
         resultFunc(resArr, operSymbArr2);
-        // console.log("hello world");
     }
-
-
-//     for (let i = 0; operSymbArr.length > i; i++) {
-//         if (operSymbArr[i] === '×') {
-//             resProp = +resArr[i] * +resArr[i+1];
-//             resArr.splice(i, 2, resProp);
-//             operSymbArr.splice(i, 1);
-//             resultFunc(resArr, operSymbArr2);
-//         }
-//         if (operSymbArr[i] === '÷') {
-//             resProp = +resArr[i] / +resArr[i+1];
-//             resArr.splice(i, 2, resProp);
-//             operSymbArr.splice(i, 1);
-//             resultFunc(resArr, operSymbArr2);
-//         }
-//         if(operSymbArr[i] === '+'){
-//             resProp = +resArr[i] + +resArr[i+1];
-//             resArr.splice(i, 2, resProp);
-//             operSymbArr.splice(i, 1);
-//             console.log(resArr);
-//             resultFunc(resArr, operSymbArr2);
-//         }
-//         if(operSymbArr[i] === '-'){
-//             resProp = +resArr[i] - +resArr[i+1];
-//             resArr.splice(i, 2, resProp);
-//             operSymbArr.splice(i, 1);
-//             console.log(resArr);
-//             resultFunc(resArr, operSymbArr2);
-//         }
-//     }
 }
 
 //з display.innerText отримати айтемс у вигляді чисел або флоат чисел, без будь яких символів.
@@ -375,6 +289,34 @@ function itemsClearCreator(displayText){
 }
  
 
+    // for (let i = 0; operSymbArr.length > i; i++) {
+    //         if (operSymbArr[i] === '×') {
+    //             resProp = +resArr[i] * +resArr[i+1];
+    //             resArr.splice(i, 2, resProp);
+    //             operSymbArr.splice(i, 1);
+    //             resultFunc(resArr, operSymbArr2);
+    //         }
+    //         if (operSymbArr[i] === '÷') {
+    //             resProp = +resArr[i] / +resArr[i+1];
+    //             resArr.splice(i, 2, resProp);
+    //             operSymbArr.splice(i, 1);
+    //             resultFunc(resArr, operSymbArr2);
+    //         }
+    //         if(operSymbArr[i] === '+'){
+    //             resProp = +resArr[i] + +resArr[i+1];
+    //             resArr.splice(i, 2, resProp);
+    //             operSymbArr.splice(i, 1);
+    //             console.log(resArr);
+    //             resultFunc(resArr, operSymbArr2);
+    //         }
+    //         if(operSymbArr[i] === '-'){
+    //             resProp = +resArr[i] - +resArr[i+1];
+    //             resArr.splice(i, 2, resProp);
+    //             operSymbArr.splice(i, 1);
+    //             console.log(resArr);
+    //             resultFunc(resArr, operSymbArr2);
+    //         }
+    //     }
  
 
 
