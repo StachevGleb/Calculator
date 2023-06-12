@@ -102,35 +102,44 @@ function equalFunction() {
     let parentheses = 0
     let closeBracketArr = []
     //перевірка чи display.innerText має дужки в своєму складі.
-    //check whether display.innerText has parentheses in its structure.
+    //check whether display.innerText has parentheses in it's structure.
     for(let i=0;i<displayText.length-1;i++){
         if (displayText[i] == '('){
             parentheses++
             useBrackets = true
             if(displayText[i] == '(' && i == 0 || parentheses == 1 && displayText[i-1] != '-' ){
-                 console.log(displayText[i-1], ' symbol in first appearence of "("')
+                console.log(displayText[i-1], ' symbol in first appearence of "("')
             } else {
-            closeBracketArr.push(displayText[i-1])
+                closeBracketArr.push(displayText[i-1])
             }
         }
     }
-
-
+    //відділяєм символи від дужок з цифрами.
+    //separate symbols from parentheses with numbers.
     let disArr = itemsClearCreator(displayText);
-     
+    //формуєм масив з операційними символами.
+    //form an array with operational symbols.
     for (let i = 0; i < displayText.length; i++) {
         if (operSymbol(displayText[i])){
             operSymbArr.push(displayText[i])
         }
     }
+    //попереджуємо повторення символів.
+    //prevent repeating characters.
     if(operSymbArr.length > disArr.length){
         operSymbArr.splice(disArr.length-1, operSymbArr.length-disArr.length)
     }
+    console.log(closeBracketArr)
+    console.log(disArr)
+    //в разі якщо, є інпут дужок.
+    //if there is an input of parentheses.
     if (useBrackets) {
         testBracketsFunc(disArr, displayText, closeBracketArr);
         useBrackets = false
         return
     }
+    //в разі якщо, немає інпут дужок.
+    //if there is no input of parentheses.
     resultFunc(disArr, operSymbArr);
 }
 
