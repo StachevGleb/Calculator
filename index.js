@@ -96,7 +96,7 @@ let resultBtn = document.getElementById('resultBtn');
 resultBtn.addEventListener('click', equalFunction);
 
 //функція equal, що викликає результативну функцію.
-//equal function that calls the resulting function
+//equal function that calls the resulting function.
 function equalFunction() {
     let displayText = display.innerText;
     let parentheses = 0
@@ -143,36 +143,43 @@ function equalFunction() {
     resultFunc(disArr, operSymbArr);
 }
 
-
+//функція testBracketsFunc, що викликає результативну функцію (якщо в інпуті є дужки).
+//testBracketsFunc function that calls the resulting function (if input with parentheses).
 function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     let operSymbArr3 = []
     let resInPerenth = []
     let parenthesesPattern = /\(([^)]+)\)/g;
-
+    //видаляємо дужки з string.
+    //delete parenthese from the string.
     displayText.replace(parenthesesPattern, '');
     let arithmeticExpression = displayText.replace(parenthesesPattern, '').trim();
 
     displayText.match(parenthesesPattern).map(function(element) {
     let beforeCounting =  element.substring(1, element.length - 1);
-    for (let i = 0; i < beforeCounting.length; i++) {
+    //отримуєм масив з опер. символами які знаходяться в дужках.
+    //receiving an array with operation symbols that are in parentheses.
+     for (let i = 0; i < beforeCounting.length; i++) {
         if (operSymbol(beforeCounting[i])){
             operSymbArr3.push(beforeCounting[i])
         }
-       
     }
+    //відділяєм символи від дужок з цифрами.
+    //separate symbols from parentheses with numbers.
     let disArr = itemsClearCreator(beforeCounting);
+    //обраховуєм результат для кожних із дужок і зберігаєм його в resInPerenth.
+    //calculate the result for every of the parentheses and saving it in resInPerenth.
     resultFunc(disArr, operSymbArr3);
     let displayText = display.innerText
     resInPerenth.push(displayText)
     });
     
-    let str = displayText;
-    let searchValue = arithmeticExpression;
+    // let str = displayText;
+    // let searchValue = arithmeticExpression;
 
-    let index = str.indexOf(searchValue);
-    while (index !== -1) {
-    index = str.indexOf(searchValue, index + 1);
-    }
+    // let index = str.indexOf(searchValue);
+    // while (index !== -1) {
+    // index = str.indexOf(searchValue, index + 1);
+    // }
  
     if(resInPerenth.length > closeBracketArr.length){
         closeBracketArr.splice(0, 0,'+')
