@@ -225,8 +225,8 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
             // newStrArr.splice(i, 0, closeBracketArr[1])
             // closeBracketArr.splice(0, 2)
         } else if (operSymbol(newStrArr[newStrArr.length-1])){
-            newStrArr.splice(newStrArr.length, 0, resInPerenth[1])
-            resInPerenth.splice(1, 1)
+            newStrArr.splice(newStrArr.length, 0, resInPerenth[resInPerenth.length-1])
+            resInPerenth.splice(resInPerenth.length-1, 1)
         }
     }
     console.log(newStrArr, '    NEW')
