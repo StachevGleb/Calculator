@@ -111,6 +111,7 @@ function equalFunction() {
                 console.log(displayText[i-1], ' symbol in first appearence of "("')
             } else {
                 closeBracketArr.push(displayText[i-1])
+                console.log("yes")
             }
         }
     }
@@ -192,19 +193,22 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
 
     closeBracketArr.join('')
     let newStrArr= []
-    console.log(arithmeticExpression)
+    // console.log(arithmeticExpression)
 
     newStrArr = arithmeticExpression.split('')
     console.log(newStrArr)
 
     for(let i=0;i < newStrArr.length;i++){
-        if(operSymbol(newStrArr[i]) && operSymbol(newStrArr[i+1])){
+        if(operSymbol(newStrArr[0])){
+            newStrArr.splice(0, 0, resInParenth[0])
+            resInParenth.splice(0, 1)
+        }else if(operSymbol(newStrArr[i]) && operSymbol(newStrArr[i+1])){
             newStrArr.splice(i+1, 0, resInParenth[0])
             resInParenth.splice(0, 1)
         } else if (operSymbol(newStrArr[newStrArr.length-1])){
             newStrArr.splice(newStrArr.length, 0, resInParenth[resInParenth.length-1])
             resInParenth.splice(resInParenth.length-1, 1)
-        }else if (operSymbol(newStrArr[0])){
+        } else if (operSymbol(newStrArr[0])){
             newStrArr.splice(0, 0, resInParenth[0])
             resInParenth.splice(0, 1)
         }
@@ -293,19 +297,24 @@ function resultFunc(disArr, operSymbArr) {
         resultFunc(resArr, operSymbArr2);
     }
 
+    if (minus >= 0 && operSymbArr2.length !== 0) {
+        resProp = +resArr[minus] - +resArr[minus + 1];
+        console.log(resArr, 'minus')
+        console.log(resArr[minus], '-' ,resArr[minus + 1])
+        resArr.splice(minus, 2, resProp);
+        operSymbArr2.splice(minus, 1);
+        resultFunc(resArr, operSymbArr2);
+    }
+    
     if (plus >= 0 && operSymbArr2.length !== 0) {
         resProp = +resArr[plus] + +resArr[plus + 1];
+        console.log(resArr, 'plus')
+        console.log(resArr[plus], '-' ,resArr[plus + 1])
         resArr.splice(plus, 2, resProp);
         operSymbArr2.splice(plus, 1);
         resultFunc(resArr, operSymbArr2);
     }
 
-    if (minus >= 0 && operSymbArr2.length !== 0) {
-        resProp = +resArr[minus] - +resArr[minus + 1];
-        resArr.splice(minus, 2, resProp);
-        operSymbArr2.splice(minus, 1);
-        resultFunc(resArr, operSymbArr2);
-    }
 }
 
 //з display.innerText отримати айтемс у вигляді чисел або флоат чисел, без будь яких символів.
