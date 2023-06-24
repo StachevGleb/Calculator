@@ -171,16 +171,6 @@ function testBracketsFunc(disArrOrig, displayText, closeBracketArr) {
     let displayText = display.innerText
     resInParenth.push(displayText)
     });
-    
-    // let str = displayText;
-    // let searchValue = arithmeticExpression;
-
-    // let index = str.indexOf(searchValue);
-    // while (index !== -1) {
-    // index = str.indexOf(searchValue, index + 1);
-    // }
-    // console.log (resInParenth)
-    // console.log (closeBracketArr)
     if(resInParenth.length > closeBracketArr.length){
         closeBracketArr.splice(0, 0,'+')
     }
@@ -328,38 +318,6 @@ function itemsClearCreator(displayText){
     });
     return disArr
 }
- 
-
-    // for (let i = 0; operSymbArr.length > i; i++) {
-    //         if (operSymbArr[i] === '×') {
-    //             resProp = +resArr[i] * +resArr[i+1];
-    //             resArr.splice(i, 2, resProp);
-    //             operSymbArr.splice(i, 1);
-    //             resultFunc(resArr, operSymbArr2);
-    //         }
-    //         if (operSymbArr[i] === '÷') {
-    //             resProp = +resArr[i] / +resArr[i+1];
-    //             resArr.splice(i, 2, resProp);
-    //             operSymbArr.splice(i, 1);
-    //             resultFunc(resArr, operSymbArr2);
-    //         }
-    //         if(operSymbArr[i] === '+'){
-    //             resProp = +resArr[i] + +resArr[i+1];
-    //             resArr.splice(i, 2, resProp);
-    //             operSymbArr.splice(i, 1);
-    //             console.log(resArr);
-    //             resultFunc(resArr, operSymbArr2);
-    //         }
-    //         if(operSymbArr[i] === '-'){
-    //             resProp = +resArr[i] - +resArr[i+1];
-    //             resArr.splice(i, 2, resProp);
-    //             operSymbArr.splice(i, 1);
-    //             console.log(resArr);
-    //             resultFunc(resArr, operSymbArr2);
-    //         }
-    //     }
- 
-
 
 
 
